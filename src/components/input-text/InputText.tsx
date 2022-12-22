@@ -7,7 +7,9 @@ type IInputText = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const InputText = React.memo(function InputText(props: IInputText) {
+export const InputText: React.FC<IInputText> = React.memo(function InputText(
+  props
+) {
   return (
     <TextField
       value={props.value}
