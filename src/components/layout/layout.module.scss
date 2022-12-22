@@ -1,0 +1,5 @@
+.layout {
+  display: grid;
+  grid-template-areas: "sidebar main settings";
+  grid-template-columns: 1fr 2fr 1fr;
+}
