@@ -1,0 +1,11 @@
+.libraryImages {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.sprite {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}

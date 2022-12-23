@@ -1,17 +1,18 @@
 import { createStore, createEvent } from "effector";
+import type { ISprite, ISpriteSettings } from "../types";
 
-type ISprite = {
-  name: string;
-  url: string;
-  width: number;
-  height: number;
+type IStore = {
+  sprites: ISprite[];
+  activeSprite: ISpriteSettings | null;
 };
 
-export const store$ = createStore<{ sprites: ISprite[] }>({
+export const store$ = createStore<IStore>({
   sprites: [],
+  activeSprite: null,
 });
 
 export const addSprite = createEvent<ISprite>();
+export const setActiveSprite = createEvent<ISprite>();
 
 store$.on(addSprite, (prev, props) => {
   const width = props.width / 2;
@@ -25,6 +26,17 @@ store$.on(addSprite, (prev, props) => {
       width,
       height,
     }),
+  };
+});
+
+store$.on(setActiveSprite, (prev, props) => {
+  const parent = "game.world";
+  return {
+    ...prev,
+    activeSprite: {
+      ...props,
+      parent,
+    },
   };
 });
 
