@@ -1,43 +1,23 @@
 import { createStore, createEvent } from "effector";
-import type { ISprite, ISpriteSettings } from "../types";
+import type { ISprite } from "../types";
 
-type IStore = {
-  sprites: ISprite[];
-  activeSprite: ISpriteSettings | null;
-};
+export const $spritesLibrary = createStore<ISprite[]>([]);
+export const $activeSpriteId = createStore<string | null>(null);
 
-export const store$ = createStore<IStore>({
-  sprites: [],
-  activeSprite: null,
+export const addImagesInLibrary = createEvent<ISprite[]>();
+export const setActiveSpriteId = createEvent<string>();
+
+$spritesLibrary.on(addImagesInLibrary, (prev, sprites) => {
+  const downscaledSprites = sprites.map((sprite) => ({
+    ...sprite,
+    width: sprite.width / 2,
+    height: sprite.height / 2,
+  }));
+
+  return prev.concat(downscaledSprites);
 });
 
-export const addSprite = createEvent<ISprite>();
-export const setActiveSprite = createEvent<ISprite>();
+$activeSpriteId.on(setActiveSpriteId, (_, spriteId) => spriteId);
 
-store$.on(addSprite, (prev, props) => {
-  const width = props.width / 2;
-  const height = props.height / 2;
-
-  return {
-    ...prev,
-    sprites: prev.sprites.concat({
-      name: props.name,
-      url: props.url,
-      width,
-      height,
-    }),
-  };
-});
-
-store$.on(setActiveSprite, (prev, props) => {
-  const parent = "game.world";
-  return {
-    ...prev,
-    activeSprite: {
-      ...props,
-      parent,
-    },
-  };
-});
-
-store$.watch(console.log);
+$spritesLibrary.watch(console.log);
+$activeSpriteId.watch(console.log);

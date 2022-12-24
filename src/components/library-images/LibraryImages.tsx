@@ -1,25 +1,20 @@
 import React from "react";
 import { useStore } from "effector-react";
-import { store$, setActiveSprite } from "../../store/store";
-import type { ISprite } from "../../types";
+import { $spritesLibrary, setActiveSpriteId } from "../../store/store";
 import styles from "./library-images.module.scss";
 
 export const LibraryImages: React.FC = React.memo(function LibraryImages() {
-  const store = useStore(store$);
-
-  const handleImageChoice = React.useCallback((sprite: ISprite) => {
-    setActiveSprite(sprite);
-  }, []);
+  const spritesLibrary = useStore($spritesLibrary);
 
   return (
     <div className={styles.libraryImages}>
-      {store.sprites.map((sprite) => (
+      {spritesLibrary.map((sprite) => (
         <img
-          key={sprite.name}
+          key={sprite.id}
           className={styles.sprite}
           src={sprite.url}
-          alt={sprite.name}
-          onClick={() => handleImageChoice(sprite)}
+          alt="sprite"
+          onClick={() => setActiveSpriteId(sprite.id)}
         />
       ))}
     </div>
